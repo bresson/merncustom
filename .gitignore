@@ -45,3 +45,6 @@ jspm_packages
 tests_output
 
 .DS_Store
+.c9/
+dist/
+data/

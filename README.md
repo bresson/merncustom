@@ -13,7 +13,7 @@ Installed linux brew
 MongoDB 
 https://community.c9.io/t/setting-up-mongodb/1717
 sudo apt-get install -y mongodb-org
-https://community.c9.io/t/setting-up-mongodb/1717
+
 
 Running MongoDB on a Cloud9 workspace
 MongoDB is preinstalled in your workspace. To run MongoDB, run the following below (passing the correct parameters to it). Mongodb data will be stored in the folder data.
@@ -24,6 +24,8 @@ $ chmod a+x mongod
 You can start mongodb by running the mongod script on your project root:
 
 $ ./mongod
+https://community.c9.io/t/mongodb-not-running-properly/12765/4
+
 // how to start with package.json so separate command not required?
 
 
