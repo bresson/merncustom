@@ -51,7 +51,6 @@ const signin = (req, res) => {
 
   })
 }
-
 /**
  * “The signout function clears the response cookie containing the signed JWT. 
  * This is an optional endpoint and not really necessary for auth purposes if 
@@ -77,6 +76,7 @@ const signout = (req, res) => {
  * error.
  * 
  */
+ 
 const requireSignin = expressJwt({
   secret: config.jwtSecret,
   userProperty: 'auth'

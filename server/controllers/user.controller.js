@@ -13,29 +13,17 @@ import errorHandler from './../helpers/dbErrorHandler'
  * Errors returned from asynchronous functions that are invoked by route handlers and middleware must be passed to the next() function where they will be caught by Express and processed accordingly. For example:
  **/
 const create = (req, res, next) => {
-    console.log('creating user')
-    const user = new User(req.body);
-    user.save((err, result) => {
-        if (err) {
-            return res.status(400).json({
-                error: errorHandler.getErrorMessage(err)
-            })
-        }
-        res.status(200).json({
-            message: "Successfully signed up!"
-        })
+  const user = new User(req.body)
+  user.save((err, result) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler.getErrorMessage(err)
+      })
+    }
+    res.status(200).json({
+      message: "Successfully signed up!"
     })
-}
-
-const list = (req, res) => {
-    User.find((err, users) => {
-        if (err) {
-            return res.status(400).json({
-                error: errorHandler.getErrorMessage(err)
-            })
-        }
-        res.json(users)
-    }).select("name email updated created");
+  })
 }
 
 /*
@@ -49,22 +37,31 @@ const list = (req, res) => {
 */
 
 const userByID = (req, res, next, id) => {
-    User.findbyId(id).exec((err, user) => {
-        if (err || !user) {
-            return res.status("400").json({
-                error: "User not found"
-            })
-        }
-        req.profile = user;
-        // next will go to the 'read' controller fn
-        next();
-    })
+  User.findById(id).exec((err, user) => {
+    if (err || !user)
+      return res.status('400').json({
+        error: "User not found"
+      })
+    req.profile = user
+    next()
+  })
 }
 
 const read = (req, res) => {
-    req.profile.hashed_password = undefined;
-    req.profile.salt = undefined;
-    return res.json(req.profile)
+  req.profile.hashed_password = undefined
+  req.profile.salt = undefined
+  return res.json(req.profile)
+}
+
+const list = (req, res) => {
+  User.find((err, users) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler.getErrorMessage(err)
+      })
+    }
+    res.json(users)
+  }).select('name email updated created')
 }
 
 /**
@@ -88,15 +85,25 @@ const update = (req, res, next) => {
 }
 
 const remove = (req, res, next) => {
-    let user = req.profile;
-    user.remove((err, deletedUser) => {
-        if (err) {
-            return res.status(400).json({
-                error: errorHandler.getErrorMessage(err)
-            })
-        }
-        deletedUser.hashed_password = undefined;
-        deletedUser.salt = undefined;
-        res.json(deletedUser)
-    })
+  let user = req.profile
+  user.remove((err, deletedUser) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler.getErrorMessage(err)
+      })
+    }
+    deletedUser.hashed_password = undefined
+    deletedUser.salt = undefined
+    res.json(deletedUser)
+  })
+}
+
+
+export default {
+  create,
+  userByID,
+  read,
+  list,
+  remove,
+  update
 }
